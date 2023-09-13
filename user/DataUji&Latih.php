@@ -122,56 +122,6 @@ if (!isset($_SESSION['roleuser'])) {
       </div>
     </div>
   </div>
-
-  <div class="container mt-4">
-    <div class="row mt-4">
-      <div class="col-md-12 card mt-4">
-        <form>
-          <div class="form-group">
-            <label for="fileInput">Select a File: </label>
-            <input id="fileInput" class="form-control" type="file">
-          </div>
-          <input class="btn btn-primary m-1" type="button" onclick="submitHandler()" value="Upload">
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    function submitHandler() {
-      console.log("click");
-      const fileInput = document.getElementById('fileInput');
-      console.log(fileInput.files);
-      const image = fileInput.files[0];
-
-      // Multipart file
-      const formData = new FormData();
-      formData.append('image_file', image);
-      formData.append('size', 'auto');
-
-      const apiKey = '9MTfhBURecRkiwrzkFkphbH7';
-
-      fetch('https://api.remove.bg/v1.0/removebg', {
-          method: 'POST',
-          headers: {
-            'X-Api-Key': apiKey
-          },
-          body: formData
-        })
-        .then(function(reponse) {
-          return reponse.blob()
-        })
-        .then(function(blob) {
-          console.log(blob);
-          const url = URL.createObjectURL(blob);
-          imageURL = url;
-          const img = document.createElement('img');
-          img.src = url;
-          document.body.appendChild(img);
-        })
-      // .catch();
-    }
-  </script>
   <!-- custom menu -->
   <section class="do_section layout_padding">
     <div class="container">
@@ -202,6 +152,7 @@ if (!isset($_SESSION['roleuser'])) {
                   <div class="card-body text-center">
                     <img src="../images/defaultoutputimage.png" alt="image" id="img" style="width:50%; height:213px; object-fit: cover; object-position: center;object-position: 50% 50%;">
                     <br>
+                    <input class="btn btn-primary m-1" type="button" onclick="submitHandler()" value="Upload">
                     <button class="btn btn-primary" type="submit">Proses</button>
                   </div>
                 </div>
@@ -229,7 +180,7 @@ if (!isset($_SESSION['roleuser'])) {
                     // Check if the uploaded file is an image
                     if ($imageType === IMAGETYPE_JPEG || $imageType === IMAGETYPE_PNG || $imageType === IMAGETYPE_GIF) {
                       // Display the uploaded image
-                      echo "<img src='data:image/jpeg;base64," . base64_encode(file_get_contents($tmpName)) . "' alt='Uploaded Image'>";
+                      // echo "<img src='data:image/jpeg;base64," . base64_encode(file_get_contents($tmpName)) . "' alt='Uploaded Image'>";
                     } else {
                       echo "Uploaded file is not a valid image.";
                     }
@@ -410,7 +361,9 @@ if (!isset($_SESSION['roleuser'])) {
                 // include "../koneksi.php";
 
                 if (isset($_POST['proses'])) {
-                  mysqli_query($conn, "insert into data_uji set gambar = '$_POST[gambar]'");
+                  mysqli_query($conn, "insert into data_uji set
+gambar = '$_POST[gambar]'
+");
                 }
                 ?>
 
@@ -611,6 +564,41 @@ if (!isset($_SESSION['roleuser'])) {
         dropArea.classList.remove("active");
         dragText.textContent = "Drag & Drop to Upload File";
       }
+    }
+  </script>
+
+  <script>
+    function submitHandler() {
+      console.log("click");
+      const fileInput = document.getElementById('input');
+      console.log(fileInput.files);
+      const image = fileInput.files[0];
+
+      // Multipart file
+      const formData = new FormData();
+      formData.append('image_file', image);
+      formData.append('size', 'auto');
+
+      const apiKey = '9MTfhBURecRkiwrzkFkphbH7';
+
+      fetch('https://api.remove.bg/v1.0/removebg', {
+          method: 'POST',
+          headers: {
+            'X-Api-Key': apiKey
+          },
+          body: formData
+        })
+        .then(function(reponse) {
+          return reponse.blob()
+        })
+        .then(function(blob) {
+          console.log(blob);
+          const url = URL.createObjectURL(blob);
+          imageURL = url;
+          const img = document.createElement('img');
+          img.src = url;
+          document.body.appendChild(img);
+        })
     }
   </script>
 </body>
