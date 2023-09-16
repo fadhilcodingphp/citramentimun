@@ -156,6 +156,9 @@ if (!isset($_SESSION['roleuser'])) {
                     <button class="btn btn-primary" type="submit">Proses</button>
                   </div>
                 </div>
+                <div id="gambar-rb">
+
+                </div>
 
                 <!-- PERHITUNGAN RGB, HSV, GLCM -->
                 <br><br>
@@ -503,75 +506,8 @@ gambar = '$_POST[gambar]'
   <script src="../js/circles.min.js"></script>
   <script src="../js/custom.js"></script>
   <script>
-    let input = document.getElementById('input')
-    let image = document.getElementById('img')
-    input.onchange = (e) => {
-      if (input.files[0]) {
-        image.src = URL.createObjectURL(input.files[0])
-      }
-    }
-  </script>
-  <script>
-    const dropArea = document.querySelector(".drag-image"),
-      dragText = dropArea.querySelector("h6"),
-      button = dropArea.querySelector("button"),
-      input = dropArea.querySelector("input");
-    let file;
-
-    button.onclick = () => {
-      input.click();
-    }
-
-    input.addEventListener("change", function() {
-
-      file = this.files[0];
-      dropArea.classList.add("active");
-      viewfile();
-    });
-
-    dropArea.addEventListener("dragover", (event) => {
-      event.preventDefault();
-      dropArea.classList.add("active");
-      dragText.textContent = "Release to Upload File";
-    });
-
-
-    dropArea.addEventListener("dragleave", () => {
-      dropArea.classList.remove("active");
-      dragText.textContent = "Drag & Drop to Upload File";
-    });
-
-    dropArea.addEventListener("drop", (event) => {
-      event.preventDefault();
-
-      file = event.dataTransfer.files[0];
-      viewfile();
-    });
-
-    function viewfile() {
-      let fileType = file.type;
-      let validExtensions = ["image/jpeg", "image/jpg", "image/png"];
-      if (validExtensions.includes(fileType)) {
-        let fileReader = new FileReader();
-        fileReader.onload = () => {
-          let fileURL = fileReader.result;
-          let imgTag = `<img src="${fileURL}" alt="image">`;
-          dropArea.innerHTML = imgTag;
-        }
-        fileReader.readAsDataURL(file);
-      } else {
-        alert("This is not an Image File!");
-        dropArea.classList.remove("active");
-        dragText.textContent = "Drag & Drop to Upload File";
-      }
-    }
-  </script>
-
-  <script>
     function submitHandler() {
-      console.log("click");
       const fileInput = document.getElementById('input');
-      console.log(fileInput.files);
       const image = fileInput.files[0];
 
       // Multipart file
@@ -579,7 +515,7 @@ gambar = '$_POST[gambar]'
       formData.append('image_file', image);
       formData.append('size', 'auto');
 
-      const apiKey = '9MTfhBURecRkiwrzkFkphbH7';
+      const apiKey = '7Q69D5LwRu54uVYj1yN4d3JV';
 
       fetch('https://api.remove.bg/v1.0/removebg', {
           method: 'POST',
@@ -595,12 +531,23 @@ gambar = '$_POST[gambar]'
           console.log(blob);
           const url = URL.createObjectURL(blob);
           imageURL = url;
+          const gambarrb = document.getElementById('gambar-rb');
           const img = document.createElement('img');
           img.src = url;
-          document.body.appendChild(img);
+          gambarrb.appendChild(img);
         })
     }
   </script>
+  <script>
+    let input = document.getElementById('input')
+    let image = document.getElementById('img')
+    input.onchange = (e) => {
+      if (input.files[0]) {
+        image.src = URL.createObjectURL(input.files[0])
+      }
+    }
+  </script>
+
 </body>
 
 </html>
